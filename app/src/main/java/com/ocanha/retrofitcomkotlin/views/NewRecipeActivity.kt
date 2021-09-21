@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.ocanha.retrofitcomkotlin.databinding.ActivityNewRecipeBinding
 import com.ocanha.retrofitcomkotlin.model.Recipe
 import com.ocanha.retrofitcomkotlin.repositories.RecipeRepository
+import com.ocanha.retrofitcomkotlin.rest.RetrofitService
 import com.ocanha.retrofitcomkotlin.viewmodel.main.MainViewModel
 import com.ocanha.retrofitcomkotlin.viewmodel.main.MainViewModelFactory
 import com.ocanha.retrofitcomkotlin.viewmodel.newrecipe.NewRecipeViewModel
@@ -18,13 +19,17 @@ class NewRecipeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityNewRecipeBinding
     private lateinit var viewModel: NewRecipeViewModel
+    private val retrofitService = RetrofitService.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNewRecipeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this, NewRecipeViewModelFactory(RecipeRepository())).get(
+        viewModel = ViewModelProvider(
+            this,
+            NewRecipeViewModelFactory(RecipeRepository(retrofitService))
+        ).get(
             NewRecipeViewModel::class.java
         )
 
